@@ -26,7 +26,7 @@ JOIN company ON aux.company_id = company.id
 
 #Mostra totes les transaccions realitzades per empreses d'Alemanya.
 
-SELECT id, country from transaction
+SELECT id from transaction
 WHERE transaction.company_id in (SELECT id from company
 					 WHERE country='Germany')
 ;
