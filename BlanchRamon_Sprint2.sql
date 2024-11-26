@@ -62,7 +62,7 @@ LIMIT 5;
 #Exercici 2
 # Quina és la mitjana de vendes per país? Presenta els resultats ordenats de major a menor mitjà.
 
-SELECT avg(amount) avgSales, country FROM transaction
+SELECT ROUND(avg(amount),2) avgSales, country FROM transaction
 INNER JOIN company ON transaction.company_id=company.id
 where declined=0
 GROUP BY country
