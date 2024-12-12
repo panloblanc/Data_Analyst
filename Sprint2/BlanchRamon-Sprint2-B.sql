@@ -3,7 +3,7 @@
 #- Exercici 2 # Utilitzant JOIN realitzaràs les següents consultes:
 
 #Llistat dels països que estan fent compres.
-SELECT DISTINCT country from company
+SELECT DISTINCT country FROM company
 INNER JOIN transaction ON company.id = transaction.company_id
 ORDER BY country
 ;
@@ -14,7 +14,7 @@ INNER JOIN company ON company.id = transaction.company_id;
 
 #Identifica la companyia amb la mitjana més gran de vendes.
 
-SELECT company.company_name from transaction
+SELECT company.company_name FROM transaction
 JOIN company ON transaction.company_id = company.id
 GROUP BY company_id, declined
 HAVING declined=0
@@ -25,23 +25,23 @@ LIMIT 1;
 
 #Mostra totes les transaccions realitzades per empreses d'Alemanya.
 
-SELECT DISTINCT id transaction_id, company_id from transaction
-WHERE transaction.company_id in (SELECT id from company
+SELECT DISTINCT id transaction_id, company_id FROM transaction
+WHERE transaction.company_id in (SELECT id FROM company
 					 WHERE country='Germany')
 ;
 
 # Llista les empreses que han realitzat transaccions per un amount superior a la mitjana de totes les transaccions.
 
-SELECT company_name from company
-WHERE id in (SELECT company_id from transaction
-			WHERE amount > (SELECT avg(amount) from transaction)
+SELECT company_name FROM company
+WHERE id in (SELECT company_id FROM transaction
+			WHERE amount > (SELECT avg(amount) FROM transaction)
             )
 ;
 
 #Eliminaran del sistema les empreses que no tenen transaccions registrades, entrega el llistat d'aquestes empreses.
 
-SELECT company_name DeleteCompany from company
-WHERE NOT EXISTS (SELECT DISTINCT company_id from transaction) 
+SELECT company_name DeleteCompany FROM company
+WHERE NOT EXISTS (SELECT DISTINCT company_id FROM transaction) 
 # Totes les companyies a la taula company tenen transaccions realitzades
 ;
 
@@ -51,7 +51,7 @@ WHERE NOT EXISTS (SELECT DISTINCT company_id from transaction)
 #Identifica els cinc dies que es va generar la quantitat més gran d'ingressos a l'empresa per vendes. 
 #Mostra la data de cada transacció juntament amb el total de les vendes.
 
-SELECT DATE(timestamp) Day, sum(amount) TotalSales from transaction
+SELECT DATE(timestamp) Day, sum(amount) TotalSales FROM transaction
 WHERE declined=0
 GROUP BY day
 ORDER BY sum(amount) DESC
@@ -83,7 +83,7 @@ HAVING country = (SELECT country FROM company
 # Només SUBQUERYS
 SELECT DISTINCT transaction.id transaction_id, company_id FROM transaction
 WHERE company_id in (SELECT id FROM company
-		WHERE country = (SELECT country from company
+		WHERE country = (SELECT country FROM company
 				 WHERE company_name="Non Institute"))
 ;
 
@@ -100,7 +100,7 @@ SELECT company_name,count(transaction.id) NumTrans,
 	CASE WHEN count(transaction.id) > 4 THEN 'Més de 4 transaccions'
 	WHEN count(transaction.id) < 4 THEN 'Menys de 4 transaccions'
 	END AS TransaccioMesMenysde4
-from transaction
+FROM transaction
 JOIN company ON company.id = transaction.company_id
 GROUP BY company_id
 ORDER BY count(id) DESC;
